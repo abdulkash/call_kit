@@ -14,7 +14,7 @@ class CallEvent {
     required this.callerId,
     required this.callerName,
     required this.opponentsIds,
-    this.userInfo,
+    required this.userInfo,
   });
 
   final String sessionId;
@@ -27,7 +27,7 @@ class CallEvent {
   /// you will get this data in event callbacks (e.g. onCallAcceptedWhenTerminated,
   /// onCallAccepted, onCallRejectedWhenTerminated, or onCallRejected)
   /// after setting it in method showCallNotification
-  final Map<String, String>? userInfo;
+  final String userInfo;
 
   CallEvent copyWith({
     String? sessionId,
@@ -35,7 +35,7 @@ class CallEvent {
     int? callerId,
     String? callerName,
     Set<int>? opponentsIds,
-    Map<String, String>? userInfo,
+    String? userInfo,
   }) {
     return CallEvent(
       sessionId: sessionId ?? this.sessionId,
@@ -54,7 +54,7 @@ class CallEvent {
       'caller_id': callerId,
       'caller_name': callerName,
       'call_opponents': opponentsIds.join(','),
-      'user_info': jsonEncode(userInfo ?? <String, String>{}),
+      'user_info': userInfo,
     };
   }
 
@@ -66,16 +66,13 @@ class CallEvent {
       callerId: map['caller_id'] as int,
       callerName: map['caller_name'] as String,
       opponentsIds:
-      (map['call_opponents'] as String).split(',').map(int.parse).toSet(),
-      userInfo: map['user_info'] != null
-          ? Map<String, String>.from(jsonDecode(map['user_info']))
-          : null,
+          (map['call_opponents'] as String).split(',').map(int.parse).toSet(),
+      userInfo: map['user_info'] as String,
     );
 
     // userInfo: map['user_info'] == null || map['user_info'].isEmpty
     //     ? null
     //     : Map<String, String>.from(jsonDecode(map['user_info'])),
-
   }
 
   String toJson() => json.encode(toMap());
@@ -104,16 +101,17 @@ class CallEvent {
         other.callerId == callerId &&
         other.callerName == callerName &&
         setEquals(other.opponentsIds, opponentsIds) &&
-        mapEquals(other.userInfo, userInfo);
+        other.userInfo == userInfo;
+    // mapEquals(other.userInfo, userInfo);
   }
 
   @override
   int get hashCode {
     return sessionId.hashCode ^
-    callType.hashCode ^
-    callerId.hashCode ^
-    callerName.hashCode ^
-    opponentsIds.hashCode ^
-    userInfo.hashCode;
+        callType.hashCode ^
+        callerId.hashCode ^
+        callerName.hashCode ^
+        opponentsIds.hashCode ^
+        userInfo.hashCode;
   }
 }
