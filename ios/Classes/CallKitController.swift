@@ -94,10 +94,10 @@ class CallKitController : NSObject {
         callInitiatorId: Int,
         callInitiatorName: String,
         opponents: [Int],
-        userInfo: String?,
+        userInfo: String,
         completion: ((Error?) -> Void)?
     ) {
-        print("[CallKitController][reportIncomingCall] call data: \(uuid), \(callType), \(callInitiatorId), \(callInitiatorName), \(opponents), \(userInfo ?? ""), ")
+        print("[CallKitController][reportIncomingCall] call data: \(uuid), \(callType), \(callInitiatorId), \(callInitiatorName), \(opponents), \(userInfo), ")
         let update = CXCallUpdate()
         update.localizedCallerName = callInitiatorName
         update.remoteHandle = CXHandle(type: .generic, value: uuid)
