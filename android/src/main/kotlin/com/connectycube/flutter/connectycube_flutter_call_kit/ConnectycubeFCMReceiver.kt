@@ -72,7 +72,7 @@ class ConnectycubeFCMReceiver : BroadcastReceiver() {
         if (callOpponentsString != null) {
             callOpponents = ArrayList(callOpponentsString.split(',').map { it.toInt() })
         }
-        val userInfo = data["user_info"] 
+        val userInfo = data["user_info"] as String
 
         if (callType == null || callInitiatorId == null || callInitiatorName == null || callOpponents.isEmpty()) {
             return
