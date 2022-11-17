@@ -61,7 +61,7 @@ extension VoIPController: PKPushRegistryDelegate {
             let callOpponentsString = callData["call_opponents"] as! String
             let callOpponents = callOpponentsString.components(separatedBy: ",")
                 .map { Int($0) ?? 0 }
-            let userInfo = callData["user_info"] as? String
+            let userInfo = callData["user_info"] as! String
             
             self.callKitController.reportIncomingCall(uuid: callId.lowercased(), callType: callType, callInitiatorId: callInitiatorId, callInitiatorName: callInitiatorName, opponents: callOpponents, userInfo: userInfo) { (error) in
                 if(error == nil){
